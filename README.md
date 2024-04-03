@@ -1,6 +1,6 @@
 # Amy
 
-A Rack-based Web Framework for studying purposes.
+A Rack-based Web Framework for studying purposes following Rebuild Rails Book by Noah Gibs.
 
 ## Installation
 
