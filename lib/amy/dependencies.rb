@@ -4,8 +4,12 @@ class Object
 
     @prevent_infinity_loop = true
 
-    require Amy.to_snake_case(c.to_s)
-    klass = Object.const_get(c)
+    begin
+      require c.to_s.downcase
+    rescue LoadError => e
+      require Amy.to_snake_case(c.to_s)
+      klass = Object.const_get(c)
+    end
 
     @prevent_infinity_loop = false
 

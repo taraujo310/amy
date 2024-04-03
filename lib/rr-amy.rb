@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "byebug"
+# require "byebug"
 require "rack"
 require_relative "amy/version"
 require_relative "amy/routing"

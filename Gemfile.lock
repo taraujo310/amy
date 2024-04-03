@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    rr-amy (0.1.3)
+    rr-amy (0.1.5)
       rack (~> 3.0)
+      rackup (~> 2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -19,6 +20,9 @@ GEM
     rack (3.0.10)
     rack-test (2.1.0)
       rack (>= 1.3)
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
     rainbow (3.1.1)
     regexp_parser (2.9.0)
     rexml (3.2.6)
@@ -37,6 +41,7 @@ GEM
       parser (>= 3.3.0.4)
     ruby-progressbar (1.13.0)
     unicode-display_width (2.5.0)
+    webrick (1.8.1)
 
 PLATFORMS
   x86_64-linux
