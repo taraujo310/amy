@@ -3,6 +3,8 @@ require "byebug"
 require "rack"
 require_relative "amy/version"
 require_relative "amy/routing"
+require_relative "amy/util"
+require_relative "amy/dependencies"
 require_relative "author"
 
 DEFAULT_HEADER = { 'content-type' => 'text/html' }
@@ -29,6 +31,8 @@ module Amy
     def respond!(body, status = nil, headers = nil)
       status  ||= 200
       headers ||= DEFAULT_HEADER
+
+      headers.delete("content-length")
 
       [status, headers, body]
     end
