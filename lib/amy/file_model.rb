@@ -38,6 +38,33 @@ module Amy
             return []
           end
         end
+
+        def create(attrs)
+          hash = {
+            "submitter" => attrs["submitter"] || "",
+            "quote" => attrs["quote"] || "",
+            "attribution" => attrs["attribution"] || ""
+          }
+
+          files = Dir["db/quotes/*.json"]
+          names = files.map { |f| f.split("/")[-1] }
+          highest = names.map { |basename| basename[0...-5].to_i }.max
+          id = highest + 1
+
+          File.open("db/quotes/#{id}.json", "w") do |f|
+            schema = <<~TEMPLATE
+            {
+              "submitter": "#{hash["submitter"]}",
+              "quote": "#{hash["quote"]}",
+              "attribution": "#{hash["attribution"]}"
+            }
+            TEMPLATE
+
+            f.write schema
+          end
+
+          FileModel.new "db/quotes/#{id}.json"
+        end
       end
     end
   end
