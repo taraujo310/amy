@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "amy/version"
+require_relative "author"
 
 module Amy
   class Application
