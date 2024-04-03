@@ -6,6 +6,7 @@ require_relative "amy/routing"
 require_relative "amy/util"
 require_relative "amy/dependencies"
 require_relative "amy/controller"
+require_relative "amy/file_model"
 require_relative "author"
 
 DEFAULT_HEADER = { 'content-type' => 'text/html' }
@@ -17,16 +18,6 @@ module Amy
 
       status, body = dispatch(env).values_at(:status, :body)
       respond!(body, status)
-    end
-
-    def dispatch(env)
-      return not_found if env["PATH_INFO"] == "/favicon.ico"
-      klass, action = get_controller_and_action(env)
-
-      controller = klass.new(env)
-      return not_found_page unless controller.respond_to?(action)
-
-      controller.make_response_for action
     end
 
     def respond!(body, status = nil, headers = nil)
