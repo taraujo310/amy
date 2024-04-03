@@ -10,3 +10,4 @@ gem "rake"
 gem "rspec"
 
 gem "rubocop"
+gem "byebug"
