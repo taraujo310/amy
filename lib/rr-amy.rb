@@ -18,7 +18,6 @@ module Amy
 
     def dispatch(env)
       return not_found if env["PATH_INFO"] == "/favicon.ico"
-
       klass, action = get_controller_and_action(env)
 
       controller = klass.new(env)
