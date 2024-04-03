@@ -5,6 +5,7 @@ require_relative "amy/version"
 require_relative "amy/routing"
 require_relative "amy/util"
 require_relative "amy/dependencies"
+require_relative "amy/controller"
 require_relative "author"
 
 DEFAULT_HEADER = { 'content-type' => 'text/html' }
@@ -61,25 +62,6 @@ module Amy
 
         { status: 404, body: File.open(default_root_path)}
       end
-    end
-  end
-
-  class Controller
-    attr_reader :env
-
-    def initialize(env)
-      @env = env
-    end
-
-    def make_response_for(action)
-      begin
-        body = [self.send(action)]
-      rescue
-        status = 500
-        body = '500 - Internal Server Error'
-      end
-
-      { status: status, body: body }
     end
   end
 end

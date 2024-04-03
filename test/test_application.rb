@@ -1,5 +1,11 @@
 require_relative "test_helper"
 
+class TestController < Amy::Controller
+  def index
+    "Hello!"
+  end
+end
+
 class TestApp < Amy::Application
 end
 
@@ -11,7 +17,7 @@ class AmyAppTest < Test::Unit::TestCase
   end
 
   def test_request
-    get "/"
+    get "/test/index"
 
     body = last_response.body
 
