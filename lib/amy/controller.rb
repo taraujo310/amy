@@ -1,5 +1,6 @@
 require "erubis"
 require "byebug"
+require "rack/request"
 
 module Amy
   class Controller
@@ -9,12 +10,25 @@ module Amy
       @env = env
     end
 
+    def request
+      @request ||= Rack::Request.new(env)
+    end
+
+    def params
+      request.params
+    end
+
     def make_response_for(action)
+      status = 200
+
       begin
         body = [self.send(action)]
+      rescue NoMethodError => e
+        status = 404
+        body = ['404 - Not Found']
       rescue
         status = 500
-        body = '500 - Internal Server Error'
+        body = ['500 - Internal Server Error']
       end
 
       { status: status, body: body }
