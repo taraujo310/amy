@@ -18,22 +18,40 @@ module Amy
       request.params
     end
 
-    def make_response_for(action)
-      status = 200
+    def response(text, status = 200, headers = { 'content-type' => 'text/html' })
+      raise "Already responded!" if @response
 
-      begin
-        body = [self.send(action)]
-      rescue NoMethodError => e
-        status = 404
-        body = ['404 - Not Found']
-      rescue => e
-        puts e.inspect
-
-        status = 500
-        body = ['500 - Internal Server Error']
+      case text
+      when File
+        body = text
+      else
+        body = [text].flatten
       end
 
-      { status: status, body: body }
+      @response = Rack::Response.new(body, status, headers)
+    end
+
+    def get_response
+      @response
+    end
+
+    def render_response(*args)
+      response(render(*args))
+    end
+
+    def make_response_for(action)
+      begin
+        body = self.send(action)
+      rescue => error
+        case error
+        when NoMethodError
+          response(render_static('404.html'), 404)
+        else
+          response('500 - Not Found', 500)
+        end
+      end
+
+      get_response.to_a
     end
 
     def render(view_name, locals = {})
@@ -42,6 +60,31 @@ module Amy
       eruby     = eruby_from template
 
       eruby.result locals.merge(:env => env)
+    end
+
+    def render_static(filename)
+      if File.exists?("./public/#{filename}")
+        path = "./public/#{filename}"
+      elsif File.exists?(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "public", filename)))
+        path = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "public", filename))
+      end
+
+      if (path)
+        File.open(path)
+      else
+        get_root_static_file
+      end
+    end
+
+    def get_root_static_file
+      begin
+        File.open('./public/index.html')
+      rescue
+        path = File.join(File.dirname(__FILE__), "..", "..", "public", "index.html")
+        default_root_path = File.expand_path(path)
+
+        File.open(default_root_path)
+      end
     end
 
     def eruby_from(template)

@@ -5,8 +5,6 @@ module Amy
       klass, action = get_controller_and_action(env)
 
       controller = klass.new(env)
-      return not_found_page unless controller.respond_to?(action)
-
       controller.make_response_for action
     end
 
