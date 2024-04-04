@@ -26,7 +26,9 @@ module Amy
       rescue NoMethodError => e
         status = 404
         body = ['404 - Not Found']
-      rescue
+      rescue => e
+        puts e.inspect
+
         status = 500
         body = ['500 - Internal Server Error']
       end

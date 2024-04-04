@@ -3,6 +3,8 @@ require "multi_json"
 module Amy
   module Model
     class FileModel
+      attr_reader :id
+
       def initialize(filename)
         @filename = filename
 
