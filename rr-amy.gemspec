@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "rackup", "~> 2.0"
   spec.add_runtime_dependency "erubis", "~> 2.0"
   spec.add_runtime_dependency "multi_json", "~> 1.0"
+  spec.add_runtime_dependency "sqlite3", "~> 1.3"
   spec.add_development_dependency "rack-test", "~> 2.0"
   spec.add_development_dependency "rubocop", "~> 1.0"
   spec.add_development_dependency "byebug", "~> 11.0"
