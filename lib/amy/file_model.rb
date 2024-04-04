@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "multi_json"
 
 module Amy
@@ -33,7 +35,7 @@ module Amy
         def all
           files = Dir["db/quotes/*.json"]
           files.map { |f| FileModel.new(f) }
-        rescue StandardError => e
+        rescue StandardError
           []
         end
 

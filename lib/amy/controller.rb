@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "erubis"
 require "byebug"
 require "rack/request"
@@ -41,7 +43,7 @@ module Amy
 
     def make_response_for(action)
       begin
-        body = send(action)
+        send(action)
       rescue StandardError => e
         case e
         when NoMethodError

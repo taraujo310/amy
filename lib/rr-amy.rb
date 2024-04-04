@@ -10,7 +10,7 @@ require_relative "amy/controller"
 require_relative "amy/file_model"
 require_relative "author"
 
-DEFAULT_HEADER = { "content-type" => "text/html" }
+DEFAULT_HEADER = { "content-type" => "text/html" }.freeze
 
 module Amy
   class Application

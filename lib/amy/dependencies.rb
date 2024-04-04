@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Object
   def self.const_missing(c)
     return nil if @prevent_infinity_loop
@@ -6,7 +8,7 @@ class Object
 
     begin
       require c.to_s.downcase
-    rescue LoadError => e
+    rescue LoadError
       require Amy.to_snake_case(c.to_s)
     end
 

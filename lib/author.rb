@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amy
   class Author
     attr_accessor :name, :email, :github
@@ -9,8 +11,8 @@ module Amy
     end
 
     def to_s
-      "Application developed by #{name} \n" +
-        "You can contact him at #{email} \n" +
+      "Application developed by #{name} \n" \
+        "You can contact him at #{email} \n" \
         "Or view the github profile: #{github}\n\n"
     end
   end

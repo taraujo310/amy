@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rack/request"
 require_relative "test_helper"
 
@@ -33,7 +35,7 @@ class MyControllerTest < Test::Unit::TestCase
   def test_it_exposes_params
     params = @controller.params
 
-    assert params.has_key?("id")
+    assert params.key?("id")
     assert_equal params["id"], "1"
   end
 
