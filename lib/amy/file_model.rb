@@ -25,20 +25,16 @@ module Amy
 
       class << self
         def find(id)
-          begin
-            FileModel.new("db/quotes/#{id}.json")
-          rescue
-            return nil
-          end
+          FileModel.new("db/quotes/#{id}.json")
+        rescue StandardError
+          nil
         end
 
         def all
-          begin
-            files = Dir["db/quotes/*.json"]
-            files.map { |f| FileModel.new(f) }
-          rescue => e
-            return []
-          end
+          files = Dir["db/quotes/*.json"]
+          files.map { |f| FileModel.new(f) }
+        rescue StandardError => e
+          []
         end
 
         def create(attrs)
@@ -55,11 +51,11 @@ module Amy
 
           File.open("db/quotes/#{id}.json", "w") do |f|
             schema = <<~TEMPLATE
-            {
-              "submitter": "#{hash["submitter"]}",
-              "quote": "#{hash["quote"]}",
-              "attribution": "#{hash["attribution"]}"
-            }
+              {
+                "submitter": "#{hash["submitter"]}",
+                "quote": "#{hash["quote"]}",
+                "attribution": "#{hash["attribution"]}"
+              }
             TEMPLATE
 
             f.write schema

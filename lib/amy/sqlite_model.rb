@@ -27,15 +27,17 @@ module Amy
       end
 
       def save
-        save! rescue false
+        save!
+      rescue StandardError
+        false
       end
 
       def define_attributes(attrs)
         column_names = self.class.schema.keys
 
-        column_names.map { |attr_name|
+        column_names.map do |attr_name|
           [attr_name, attrs[attr_name.to_s] || attrs[attr_name.to_sym]]
-        }.each { |(name, value)| define_attribute_with_accessor(name, value)  }
+        end.each { |(name, value)| define_attribute_with_accessor(name, value) }
       end
 
       def define_attribute_with_accessor(name, value)
@@ -60,7 +62,7 @@ module Amy
         end
 
         def columns
-          schema.keys()
+          schema.keys
         end
 
         def to_sql(val)
@@ -95,13 +97,13 @@ module Amy
 
         def insert_query_for(keys, values)
           <<~SQL.strip
-            INSERT INTO #{table} (#{keys.join ','})
-            VALUES (#{values.join ','});
+            INSERT INTO #{table} (#{keys.join ","})
+            VALUES (#{values.join ","});
           SQL
         end
 
         def count
-           DB.execute(count_query)[0][0]
+          DB.execute(count_query)[0][0]
         end
 
         def count_query
@@ -112,7 +114,7 @@ module Amy
 
         def find(id)
           row = DB.execute <<~SQL.strip
-            SELECT #{columns.join(',')} from #{table}
+            SELECT #{columns.join(",")} from #{table}
             WHERE id = #{id};
           SQL
 
@@ -123,7 +125,7 @@ module Amy
 
         def first
           row = DB.execute <<~SQL.strip
-            SELECT #{columns.join(',')} from #{table} ORDER BY id ASC LIMIT 1;
+            SELECT #{columns.join(",")} from #{table} ORDER BY id ASC LIMIT 1;
           SQL
 
           data = Hash[columns.zip row[0]]
@@ -133,7 +135,7 @@ module Amy
 
         def last
           row = DB.execute <<~SQL.strip
-            SELECT #{columns.join(',')} from #{table} ORDER BY id DESC LIMIT 1;
+            SELECT #{columns.join(",")} from #{table} ORDER BY id DESC LIMIT 1;
           SQL
 
           data = Hash[columns.zip row[0]]
@@ -143,7 +145,7 @@ module Amy
 
         def all
           rows = DB.execute <<~SQL.strip
-            SELECT #{columns.join(',')} from #{table} ORDER BY id ASC;
+            SELECT #{columns.join(",")} from #{table} ORDER BY id ASC;
           SQL
 
           rows.map { |row| new(Hash[columns.zip row]) }

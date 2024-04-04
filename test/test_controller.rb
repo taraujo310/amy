@@ -14,10 +14,10 @@ end
 class MyControllerTest < Test::Unit::TestCase
   def setup
     env = {
-      "PATH_INFO"=>"/test/action",
-      "QUERY_STRING"=>"id=1",
-      "REQUEST_METHOD"=>"GET",
-      "REQUEST_URI"=>"http://127.0.0.1:3001/test/action?id=1"
+      "PATH_INFO" => "/test/action",
+      "QUERY_STRING" => "id=1",
+      "REQUEST_METHOD" => "GET",
+      "REQUEST_URI" => "http://127.0.0.1:3001/test/action?id=1"
     }
     @controller = TestController.new(env)
   end

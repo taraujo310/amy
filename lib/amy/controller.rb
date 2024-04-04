@@ -18,15 +18,15 @@ module Amy
       request.params
     end
 
-    def response(text, status = 200, headers = { 'content-type' => 'text/html' })
+    def response(text, status = 200, headers = { "content-type" => "text/html" })
       raise "Already responded!" if @response
 
-      case text
-      when File
-        body = text
-      else
-        body = [text].flatten
-      end
+      body = case text
+             when File
+               text
+             else
+               [text].flatten
+             end
 
       @response = Rack::Response.new(body, status, headers)
     end
@@ -41,13 +41,13 @@ module Amy
 
     def make_response_for(action)
       begin
-        body = self.send(action)
-      rescue => error
-        case error
+        body = send(action)
+      rescue StandardError => e
+        case e
         when NoMethodError
-          response(render_static('404.html'), 404)
+          response(render_static("404.html"), 404)
         else
-          response('500 - Not Found', 500)
+          response("500 - Not Found", 500)
         end
       end
 
@@ -59,17 +59,17 @@ module Amy
       template  = File.read filename
       eruby     = eruby_from template
 
-      eruby.result locals.merge(:env => env)
+      eruby.result locals.merge(env: env)
     end
 
     def render_static(filename)
-      if File.exists?("./public/#{filename}")
+      if File.exist?("./public/#{filename}")
         path = "./public/#{filename}"
-      elsif File.exists?(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "public", filename)))
+      elsif File.exist?(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "public", filename)))
         path = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "public", filename))
       end
 
-      if (path)
+      if path
         File.open(path)
       else
         get_root_static_file
@@ -77,18 +77,16 @@ module Amy
     end
 
     def get_root_static_file
-      begin
-        File.open('./public/index.html')
-      rescue
-        path = File.join(File.dirname(__FILE__), "..", "..", "public", "index.html")
-        default_root_path = File.expand_path(path)
+      File.open("./public/index.html")
+    rescue StandardError
+      path = File.join(File.dirname(__FILE__), "..", "..", "public", "index.html")
+      default_root_path = File.expand_path(path)
 
-        File.open(default_root_path)
-      end
+      File.open(default_root_path)
     end
 
     def eruby_from(template)
-       eruby     = Erubis::Eruby.new template
+      eruby = Erubis::Eruby.new template
 
       instance_variables.each do |variable|
         eruby.instance_variable_set(variable, instance_variable_get(variable))

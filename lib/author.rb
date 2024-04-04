@@ -10,8 +10,8 @@ module Amy
 
     def to_s
       "Application developed by #{name} \n" +
-      "You can contact him at #{email} \n" +
-      "Or view the github profile: #{github}\n\n"
+        "You can contact him at #{email} \n" +
+        "Or view the github profile: #{github}\n\n"
     end
   end
 end
